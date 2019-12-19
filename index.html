@@ -264,6 +264,7 @@
           success: data => {
             if (!data.success == true) {
               alert("failed to register");
+              $("#btnSubmitRegister").prop("disabled", false);
             } else {
               $("#btnSubmitRegister").prop("disabled", false);
               $("#registerForm").addClass("d-none");
