@@ -17,18 +17,10 @@
       crossorigin="anonymous"
     />
     <!-- jquery plugin -->
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- Favicons -->
-    <link
-      rel="apple-touch-icon"
-      href="/docs/4.4/assets/img/favicons/apple-touch-icon.png"
-      sizes="180x180"
-    />
+    <link rel="page-icon" href="../landing-app/icon.png" sizes="60x60" />
 
     <style>
       .bd-placeholder-img {
@@ -62,6 +54,7 @@
           placeholder="Mobile Number"
           required="required"
           autofocus=""
+          onkeyup="checkPhoneNumber(this.value)"
         />
         <label for="inputFirstName" class="sr-only">First Name</label>
         <input
@@ -135,6 +128,7 @@
           class="form-control"
           placeholder="Email"
           required="required"
+          onkeyup="checkEmail(this.value)"
         />
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           Register
@@ -145,4 +139,18 @@
       </form>
     </div>
   </body>
+  <script>
+    const urlApi = "http://localhost:3000/api/";
+    checkEmail = async email => {
+      $.get(`${urlApi}AuthServices/checkEmail`, { email: email }, data => {
+        let res = JSON.parse(data);
+        if (res.valid) {
+          alert(data.valid);
+        } else {
+          alert("API down");
+        }
+      });
+      // alert(email);
+    };
+  </script>
 </html>
