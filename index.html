@@ -272,6 +272,7 @@
             }
           },
           error: function(data) {
+            $("#btnSubmitRegister").prop("disabled", false);
             alert("failed to register");
           }
         });
