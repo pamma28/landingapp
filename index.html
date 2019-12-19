@@ -1,0 +1,148 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="coding test for mitrais" />
+    <meta name="author" content="Yunas Pamatda" />
+    <title>Registration Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <!-- jquery plugin -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Favicons -->
+    <link
+      rel="apple-touch-icon"
+      href="/docs/4.4/assets/img/favicons/apple-touch-icon.png"
+      sizes="180x180"
+    />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- style css -->
+    <link href="../assets/style.css" rel="stylesheet" />
+  </head>
+  <body id="container">
+    <div class="form-box">
+      <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-bold">Registration</h1>
+        <label for="inputMobileNumber" class="sr-only">Mobile Number</label>
+        <input
+          type="text"
+          id="inputMobileNumber"
+          class="form-control"
+          placeholder="Mobile Number"
+          required="required"
+          autofocus=""
+        />
+        <label for="inputFirstName" class="sr-only">First Name</label>
+        <input
+          type="text"
+          id="inputFirstName"
+          class="form-control"
+          placeholder="First Name"
+          required="required"
+        />
+        <label for="inputLastName" class="sr-only">Last Name</label>
+        <input
+          type="text"
+          id="inputLastName"
+          class="form-control"
+          placeholder="Last Name"
+          required="required"
+        />
+        <label for="inputLastName">Date of Birth</label>
+        <div class="row">
+          <div class="col-md">
+            <select class="form-control tight-top">
+              <option value="">Month</option>
+            </select>
+          </div>
+          <div class="col-md">
+            <select class="form-control tight-top">
+              <option value="">Date</option>
+            </select>
+          </div>
+          <div class="col-md">
+            <select class="form-control tight-top">
+              <option value="">Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row justify-content-start">
+            <div class="col-2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  value="male"
+                />
+                <label class="form-check-label" for="inputGender">
+                  Male
+                </label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  value="female"
+                />
+                <label class="form-check-label" for="inputGender">
+                  Female
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email"
+          required="required"
+        />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          Register
+        </button>
+        <p class="mt-5 mb-3 text-muted text-center">
+          This is created by Yunas Pamatda © 2019
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
