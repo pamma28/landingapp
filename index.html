@@ -186,6 +186,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
   <script>
     const urlApi = "http://localhost:3000/api/";
+
+    let validEmail = false;
+    let validPhone = false;
     checkEmail = async email => {
       $("#btnSubmitRegister").prop("disabled", true);
       $.ajax({
@@ -196,11 +199,12 @@
           if (!data.valid == true) {
             $("#inputEmail")[0].setCustomValidity("Email has been registered");
           } else {
+            validEmail = true;
             $("#btnSubmitRegister").prop("disabled", false);
           }
         },
-        error: function(data) {
-          alert("Email has been registered");
+        error: $xhr => {
+          alert($xhr.responseJSON.error.message);
         }
       });
     };
@@ -216,11 +220,12 @@
               "Phone Number has been registered"
             );
           } else {
+            validPhone = true;
             $("#btnSubmitRegister").prop("disabled", false);
           }
         },
-        error: function(data) {
-          alert("Phone Number has been registered");
+        error: $xhr => {
+          alert($xhr.responseJSON.error.message);
         }
       });
     };
@@ -242,32 +247,36 @@
           $("#inputDate").val();
       }
 
-      // submit data registration
-      $.ajax({
-        url: `${urlApi}AuthServices/register`,
-        type: "POST",
-        data: JSON.stringify({
-          email: $("#inputEmail").val(),
-          firstName: $("#inputFirstName").val(),
-          lastName: $("#inputLastName").val(),
-          birthDate: birthDate,
-          gender: $("#inputEmail").val(),
-          phoneNumber: $("#inputMobileNumber").val()
-        }),
-        contentType: "application/json; charset=utf-8",
-        success: data => {
-          if (!data.success == true) {
+      // submit data registration if phone and email are valid
+      if (validEmail && validPhone) {
+        $.ajax({
+          url: `${urlApi}AuthServices/register`,
+          type: "POST",
+          data: JSON.stringify({
+            email: $("#inputEmail").val(),
+            firstName: $("#inputFirstName").val(),
+            lastName: $("#inputLastName").val(),
+            birthDate: birthDate,
+            gender: $("input[name=gender]").val(),
+            phoneNumber: $("#inputMobileNumber").val()
+          }),
+          contentType: "application/json; charset=utf-8",
+          success: data => {
+            if (!data.success == true) {
+              alert("failed to register");
+            } else {
+              $("#btnSubmitRegister").prop("disabled", false);
+              $("#registerForm").addClass("d-none");
+              $("#loginForm").removeClass("d-none");
+            }
+          },
+          error: function(data) {
             alert("failed to register");
-          } else {
-            $("#btnSubmitRegister").prop("disabled", false);
-            $("#registerForm").addClass("d-none");
-            $("#loginForm").removeClass("d-none");
           }
-        },
-        error: function(data) {
-          alert("failed to register");
-        }
-      });
+        });
+      } else {
+        alert("please check again your email and phone");
+      }
     });
 
     // set up year and month
@@ -290,7 +299,7 @@
 
     // set up date
     createDate = async month => {
-      let arrMonth = [1, 3, 5, 7, 8, 11];
+      let arrMonth = [1, 3, 5, 7, 8, 10, 12];
       let limit = 30;
       if ($.inArray(parseInt(month), arrMonth) !== -1) {
         limit = 31;
