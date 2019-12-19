@@ -54,7 +54,7 @@
           placeholder="Mobile Number"
           required="required"
           autofocus=""
-          onkeyup="checkPhoneNumber(this.value)"
+          onchange="checkPhoneNumber(this.value)"
         />
         <label for="inputFirstName" class="sr-only">First Name</label>
         <input
@@ -128,9 +128,13 @@
           class="form-control"
           placeholder="Email"
           required="required"
-          onkeyup="checkEmail(this.value)"
+          onchange="checkEmail(this.value)"
         />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        <button
+          class="btn btn-lg btn-primary btn-block"
+          type="submit"
+          id="btnSubmitRegister"
+        >
           Register
         </button>
         <p class="mt-5 mb-3 text-muted text-center">
@@ -142,15 +146,40 @@
   <script>
     const urlApi = "http://localhost:3000/api/";
     checkEmail = async email => {
-      $.get(`${urlApi}AuthServices/checkEmail`, { email: email }, data => {
-        let res = JSON.parse(data);
-        if (res.valid) {
-          alert(data.valid);
-        } else {
-          alert("API down");
+      $("#btnSubmitRegister").prop("disabled", true);
+      $.ajax({
+        url: `${urlApi}AuthServices/checkEmail?email=${email}`,
+        body: { email: email },
+        type: "GET",
+        success: data => {
+          $("#btnSubmitRegister").prop("disabled", false);
+          if (data.valid == true) {
+            $("#inputEmail")[0].setCustomValidity("Email has been registered");
+          }
+        },
+        error: function(data) {
+          alert("woops!"); //or whatever
         }
       });
-      // alert(email);
+    };
+
+    checkPhoneNumber = async phoneNumber => {
+      $("#btnSubmitRegister").prop("disabled", true);
+      $.ajax({
+        url: `${urlApi}AuthServices/checkPhoneNumber?phoneNumber=${phoneNumber}`,
+        type: "GET",
+        success: data => {
+          $("#btnSubmitRegister").prop("disabled", false);
+          if (data.valid == true) {
+            $("#inputMobileNumber")[0].setCustomValidity(
+              "Phone Number has been registered"
+            );
+          }
+        },
+        error: function(data) {
+          alert("woops!"); //or whatever
+        }
+      });
     };
   </script>
 </html>
