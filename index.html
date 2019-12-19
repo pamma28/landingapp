@@ -43,7 +43,7 @@
     <link href="../landingapp/assets/style.css" rel="stylesheet" />
   </head>
   <body id="container">
-    <div class="form-box">
+    <div class="form-box" id="registerForm">
       <form class="form-signin">
         <h1 class="h3 mb-3 font-weight-bold">Registration</h1>
         <label for="inputMobileNumber" class="sr-only">Mobile Number</label>
@@ -89,7 +89,11 @@
             </select>
           </div>
           <div class="col-md">
-            <select class="form-control tight-top" id="inputYear">
+            <select
+              class="form-control tight-top"
+              id="inputYear"
+              onchange="checkLeapYear(this.value)"
+            >
               <option value="">Year</option>
             </select>
           </div>
@@ -141,11 +145,42 @@
         >
           Register
         </button>
-        <p class="mt-5 mb-3 text-muted text-center">
-          This is created by Yunas Pamatda © 2019
-        </p>
       </form>
     </div>
+    <div class="form-box" id="loginForm">
+      <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-bold">Login Page</h1>
+        <label for="emailLogin" class="sr-only">Your Email</label>
+        <input
+          type="text"
+          id="emailLogin"
+          class="form-control"
+          placeholder="Your Email"
+          required="required"
+          autofocus=""
+        />
+
+        <label for="phoneLogin" class="sr-only">Your Mobile Number</label>
+        <input
+          type="password"
+          id="phoneLogin"
+          class="form-control"
+          placeholder="Your Mobile Number"
+          required="required"
+          onchange=""
+        />
+        <button
+          class="btn btn-lg btn-primary btn-block"
+          type="submit"
+          id="btnLogin"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+    <p class="mt-5 mb-3 text-muted text-center">
+      This is created by Yunas Pamatda © 2019
+    </p>
   </body>
   <script>
     const urlApi = "http://localhost:3000/api/";
@@ -190,6 +225,22 @@
 
     $("#btnSubmitRegister").on("click", () => {
       $("#btnSubmitRegister").prop("disabled", true);
+      // set birthdate
+      let birthDate = null;
+      if (
+        $("#inputYear").val() &&
+        $("#inputYear").val() &&
+        $("#inputYear").val()
+      ) {
+        birthDate =
+          $("#inputYear").val() +
+          "-" +
+          $("#inputMonth").val() +
+          "-" +
+          $("#inputDate").val();
+      }
+
+      // submit data registration
       $.ajax({
         url: `${urlApi}AuthServices/register`,
         type: "POST",
@@ -197,12 +248,7 @@
           email: $("#inputEmail").val(),
           firstName: $("#inputFirstName").val(),
           lastName: $("#inputLastName").val(),
-          birthDate:
-            $("#inputYear").val() +
-            "-" +
-            $("#inputMonth").val() +
-            "-" +
-            $("#inputDate").val(),
+          birthDate: birthDate,
           gender: $("#inputEmail").val(),
           phoneNumber: $("#inputMobileNumber").val()
         }),
@@ -212,7 +258,8 @@
             alert("failed to register");
           } else {
             $("#btnSubmitRegister").prop("disabled", false);
-            $("#btnSubmitRegister").prop("value", "Sign In");
+            $("#registerForm").addClass("d-none");
+            $("#loginForm").removeClass("d-none");
           }
         },
         error: function(data) {
@@ -221,7 +268,9 @@
       });
     });
 
+    // set up year and month
     $(document).ready(() => {
+      $("#loginForm").addClass("d-none");
       $("#inputMonth")
         .find("option")
         .remove();
@@ -229,17 +278,17 @@
       for (let i = 0; i < 12; i++) {
         $("#inputMonth").append(new Option(i + 1, i + 1));
       }
+      $("#inputYear").append(new Option("Year", null));
       for (let i = 1970; i < 2020; i++) {
         $("#inputYear").append(new Option(i, i));
       }
     });
 
-    createDate = month => {
-      console.log(month);
-
-      let limit = 30;
+    // set up date
+    createDate = async month => {
       let arrMonth = [1, 3, 5, 7, 8, 11];
-      if ($.inArray(arrMonth, parseInt(month)) > -1) {
+      let limit = 30;
+      if ($.inArray(parseInt(month), arrMonth) !== -1) {
         console.log("masuk");
         limit = 31;
       } else if (month == 2) {
@@ -248,10 +297,22 @@
       $("#inputDate")
         .find("option")
         .remove();
-      $("#inputMonth").append(new Option("date", null));
-
+      $("#inputMonth").append(new Option("Date", null));
       for (let i = 1; i <= limit; i++) {
         $("#inputDate").append(new Option(i, i));
+      }
+    };
+
+    // check if february is 29 days
+    checkLeapYear = year => {
+      if ($("#inputMonth").val() == 2 && $("#inputYear").val() % 4 == 0) {
+        $("#inputDate")
+          .find("option")
+          .remove();
+        $("#inputMonth").append(new Option("Date", null));
+        for (let i = 1; i <= 29; i++) {
+          $("#inputDate").append(new Option(i, i));
+        }
       }
     };
   </script>
